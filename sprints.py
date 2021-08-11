@@ -22,7 +22,7 @@ def is_task_in_progress(task):
 
 def is_task_in_backlog(task): 
     return task.status in ["", "In Refinement"]
-    
+
 def new_sprint_points(estimate, done):
     if estimate and done and estimate > done:
         return estimate - done, None
@@ -110,14 +110,15 @@ def start_sprint(active_sprint, next_sprint):
     active_sprint.active_sprint = False
     next_sprint.active_sprint = True
 
-def start_sprint():
-    if len(active_sprints) > 0 and len(next_sprints) > 0:
-        start_sprint(active_sprints[0], next_sprints[0])
-    else:
-        print(f"Couldn't find the active sprint {len(active_sprints)} or next sprint {len(next_sprints)}")
+if __name__ == '__main__':
+    def start_sprint():
+        if len(active_sprints) > 0 and len(next_sprints) > 0:
+            start_sprint(active_sprints[0], next_sprints[0])
+        else:
+            print(f"Couldn't find the active sprint {len(active_sprints)} or next sprint {len(next_sprints)}")
 
-def end_sprint():
-    if len(active_sprints) > 0:
-        end_sprint(active_sprints[0])
-    else:
-        print(f"Couldn't find an active sprint {len(active_sprints)}")
+    def end_sprint():
+        if len(active_sprints) > 0:
+            end_sprint(active_sprints[0])
+        else:
+            print(f"Couldn't find an active sprint {len(active_sprints)}")
