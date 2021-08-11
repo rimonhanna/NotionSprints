@@ -1,4 +1,4 @@
-name: Pylint
+name: Start Sprint
 
 on: 
   workflow_dispatch:
