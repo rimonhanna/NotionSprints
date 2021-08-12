@@ -21,4 +21,4 @@ jobs:
         pip install -r requirements.txt
         
     - name: Start sprint
-      run: python start_sprint.py'
+      run: python start_sprint.py
