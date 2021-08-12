@@ -21,4 +21,4 @@ jobs:
         pip install -r requirements.txt
         
     - name: End sprint
-      run: python -c 'import sprints; print sprints.end_sprint()'
+      run: python end_sprint.py
