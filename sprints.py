@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 # Obtain the `token_v2` value by inspecting your browser cookies on a logged-in (non-guest) session on Notion.so
-client = NotionClient(token_v2=os.getenv('NOTION_TOKEN'), email=os.getenv('NOTION_EMAIL'))
+client = NotionClient(token_v2=os.getenv('NOTION_TOKEN'), email=os.getenv('NOTION_EMAIL'), password=os.getenv('NOTION_PASSWORD'))
 
 # Access a database using the URL of the database page or the inline block
 sprints = client.get_collection_view(os.getenv('SPRINTS_TABLE_URL'))
