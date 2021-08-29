@@ -13,7 +13,7 @@ client = NotionClient(token_v2=token)
 sprints = client.get_collection_view(os.getenv('SPRINTS_TABLE_URL'))
 
 active_sprints = [x for x in sprints.collection.get_rows() if x.active_sprint]
-next_sprints = [x for x in sprints.collection.get_rows() if x.start_date and (x.start_date.start == datetime.today().date() or x.start_date.start == datetime.today().date() + timedelta(-1))]
+next_sprints = [x for x in sprints.collection.get_rows() if x.start_date and x.end_date and (x.start_date.start <= datetime.today().date() and x.end_date.start >= datetime.today().date())]
 
 def is_task_done(task): 
     return task.status in ["Test", "Demo", "Done 🙌"]
