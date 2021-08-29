@@ -23,7 +23,7 @@ jobs:
     - name: Prepare env variables
       run: |
         export NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}
-        export NOTION_TOKEN=${{ secrets.SPRINTS_TABLE_URL }}
+        export SPRINTS_TABLE_URL=${{ secrets.SPRINTS_TABLE_URL }}
 
     - name: End sprint
       run: python end_sprint.py
