@@ -27,6 +27,8 @@ def is_task_in_backlog(task):
 def new_sprint_points(estimate, done):
     if estimate and done and estimate > done:
         return estimate - done, None
+    else:
+        return estimate, done
 
 def end_old_sprint(active_sprint):
     m_estimate_sum = s_estimate_sum = b_estimate_sum = m_done_sum = s_done_sum = b_done_sum = 0
