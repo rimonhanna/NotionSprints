@@ -7,6 +7,7 @@ load_dotenv()
 
 # Obtain the `token_v2` value by inspecting your browser cookies on a logged-in (non-guest) session on Notion.so
 token = os.getenv('NOTION_TOKEN')
+print(f" {token=}")
 client = NotionClient(token_v2=token)
 
 # Access a database using the URL of the database page or the inline block
