@@ -7,7 +7,6 @@ load_dotenv()
 
 # Obtain the `token_v2` value by inspecting your browser cookies on a logged-in (non-guest) session on Notion.so
 token = os.getenv('NOTION_TOKEN')
-print(f" {token=}")
 client = NotionClient(token_v2=token)
 
 # Access a database using the URL of the database page or the inline block
@@ -29,7 +28,7 @@ def new_sprint_points(estimate, done):
     if estimate and done and estimate > done:
         return estimate - done, None
 
-def end_sprint(active_sprint):
+def end_old_sprint(active_sprint):
     m_estimate_sum = s_estimate_sum = b_estimate_sum = m_done_sum = s_done_sum = b_done_sum = 0
 
     def calculate_sum(task, estimate_sum, done_sum, estimate, done):
@@ -69,7 +68,7 @@ def end_sprint(active_sprint):
     print(f" {b_estimate_sum=}")
     print(f" {b_done_sum=}")
 
-def start_sprint(active_sprint, next_sprint):
+def start_new_sprint(active_sprint, next_sprint):
 
     def migrate_unfinished_tasks(active_sprint, next_sprint):
         if active_sprint != next_sprint:
@@ -114,12 +113,12 @@ def start_sprint(active_sprint, next_sprint):
 
 def start_sprint():
     if len(active_sprints) > 0 and len(next_sprints) > 0:
-        start_sprint(active_sprints[0], next_sprints[0])
+        start_new_sprint(active_sprints[0], next_sprints[0])
     else:
         print(f"Couldn't find the active sprint {len(active_sprints)} or next sprint {len(next_sprints)}")
 
 def end_sprint():
     if len(active_sprints) > 0:
-        end_sprint(active_sprints[0])
+        end_old_sprint(active_sprints[0])
     else:
         print(f"Couldn't find an active sprint {len(active_sprints)}")
