@@ -16,7 +16,7 @@ active_sprints = [x for x in sprints.collection.get_rows() if x.active_sprint]
 next_sprints = [x for x in sprints.collection.get_rows() if x.start_date and x.end_date and (x.start_date.start <= datetime.today().date() and x.end_date.start >= datetime.today().date())]
 
 def is_task_done(task): 
-    return task.status in ["Test", "Demo", "Done 🙌"]
+    return task.status in ["Demo", "Done 🙌"]
 
 def is_task_in_progress(task): 
     return task.status in ["Next Up", "In Progress", "Code Review"]
@@ -37,7 +37,7 @@ def end_old_sprint(active_sprint):
         if estimate:
             estimate_sum += estimate
 
-            if is_task_done(task):
+            if not is_task_in_progress(task):
                 done = estimate
                 done_sum += estimate
             elif done:
@@ -75,7 +75,7 @@ def start_new_sprint(active_sprint, next_sprint):
     def migrate_unfinished_tasks(active_sprint, next_sprint):
         if active_sprint != next_sprint:
             for task in active_sprint.tasks:
-                if is_task_in_progress(task):
+                if not is_task_done(task):
                     task.m_estimate, task.m_done = new_sprint_points(task.m_estimate, task.m_done)
                     task.s_estimate, task.s_done = new_sprint_points(task.s_estimate, task.s_done)
                     task.b_estimate, task.b_done = new_sprint_points(task.b_estimate, task.b_done)
