@@ -22,7 +22,7 @@ def is_task_in_progress(task):
     return task.status in ["Next Up", "In Progress", "Code Review"]
 
 def is_task_in_backlog(task): 
-    return task.status in ["", "In Refinement"]
+    return task.status in ["", "Refinement"]
 
 def new_sprint_points(estimate, done):
     if estimate and done and estimate > done:
@@ -31,43 +31,33 @@ def new_sprint_points(estimate, done):
         return estimate, done
 
 def end_old_sprint(active_sprint):
-    m_estimate_sum = s_estimate_sum = b_estimate_sum = m_done_sum = s_done_sum = b_done_sum = 0
+    m_done_sum = s_done_sum = b_done_sum = 0
 
-    def calculate_sum(task, estimate_sum, done_sum, estimate, done):
+    def calculate_sum(task, done_sum, estimate, done):
         if estimate:
-            estimate_sum += estimate
-
             if not is_task_in_progress(task):
                 done = estimate
                 done_sum += estimate
             elif done:
                 done_sum += done
-        return estimate_sum, done_sum, done
+        return done_sum, done
 
 
     for task in active_sprint.tasks:
         if not is_task_in_backlog(task):
-            m_estimate_sum, m_done_sum, task.m_done = calculate_sum(task, m_estimate_sum, m_done_sum, task.m_estimate, task.m_done)
-            s_estimate_sum, s_done_sum, task.s_done = calculate_sum(task, s_estimate_sum, s_done_sum, task.s_estimate, task.s_done)
-            b_estimate_sum, b_done_sum, task.b_done = calculate_sum(task, b_estimate_sum, b_done_sum, task.b_estimate, task.b_done)
+            m_done_sum, task.m_done = calculate_sum(task, m_done_sum, task.m_estimate, task.m_done)
+            s_done_sum, task.s_done = calculate_sum(task, s_done_sum, task.s_estimate, task.s_done)
+            b_done_sum, task.b_done = calculate_sum(task, b_done_sum, task.b_estimate, task.b_done)
 
             if task.status == "Demo":
                 task.status = "Done 🙌"
 
-    active_sprint.m_estimate = m_estimate_sum
     active_sprint.m_done = m_done_sum
-
-    active_sprint.s_estimate = s_estimate_sum
     active_sprint.s_done = s_done_sum
-
-    active_sprint.b_estimate = b_estimate_sum
     active_sprint.b_done = b_done_sum
 
-    print(f" {m_estimate_sum=}")
     print(f" {m_done_sum=}")
-    print(f" {s_estimate_sum=}")
     print(f" {s_done_sum=}")
-    print(f" {b_estimate_sum=}")
     print(f" {b_done_sum=}")
 
 def start_new_sprint(active_sprint, next_sprint):
@@ -88,13 +78,13 @@ def start_new_sprint(active_sprint, next_sprint):
 
         for task in next_sprint.tasks:
             if not is_task_in_backlog(task):
-                if task.m_estimate:
+                if task.m_estimate and not task.m_done:
                     m_estimate_sum += task.m_estimate
 
-                if task.s_estimate:
+                if task.s_estimate and not task.s_done:
                     s_estimate_sum += task.s_estimate
 
-                if task.b_estimate:
+                if task.b_estimate and not task.b_done:
                     b_estimate_sum += task.b_estimate
 
         return m_estimate_sum, s_estimate_sum, b_estimate_sum
