@@ -107,7 +107,7 @@ def start_new_sprint(active_sprint, next_sprint):
 
 def start_sprint():
     if len(active_sprints) > 0 and len(next_sprints) > 0:
-        start_new_sprint(active_sprints[0], next_sprints[0])
+        start_new_sprint(active_sprints[0], next_sprints[len(next_sprints) - 1])
     else:
         print(f"Couldn't find the active sprint {len(active_sprints)} or next sprint {len(next_sprints)}")
 
