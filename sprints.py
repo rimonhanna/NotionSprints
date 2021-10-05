@@ -77,15 +77,17 @@ def start_new_sprint(active_sprint, next_sprint):
         m_estimate_sum = s_estimate_sum = b_estimate_sum = 0
 
         for task in next_sprint.tasks:
-            if not is_task_in_backlog(task):
-                if task.m_estimate and not task.m_done:
-                    m_estimate_sum += task.m_estimate
+            if is_task_in_backlog(task):
+                task.status = "Next Up"
 
-                if task.s_estimate and not task.s_done:
-                    s_estimate_sum += task.s_estimate
+            if task.m_estimate and not task.m_done:
+                m_estimate_sum += task.m_estimate
 
-                if task.b_estimate and not task.b_done:
-                    b_estimate_sum += task.b_estimate
+            if task.s_estimate and not task.s_done:
+                s_estimate_sum += task.s_estimate
+
+            if task.b_estimate and not task.b_done:
+                b_estimate_sum += task.b_estimate
 
         return m_estimate_sum, s_estimate_sum, b_estimate_sum
 
