@@ -44,7 +44,7 @@ def end_old_sprint(active_sprint):
 
 
     for task in active_sprint.tasks:
-        if not is_task_in_backlog(task):
+        if task.alive and not is_task_in_backlog(task):
             m_done_sum, task.m_done = calculate_sum(task, m_done_sum, task.m_estimate, task.m_done)
             s_done_sum, task.s_done = calculate_sum(task, s_done_sum, task.s_estimate, task.s_done)
             b_done_sum, task.b_done = calculate_sum(task, b_done_sum, task.b_estimate, task.b_done)
@@ -65,7 +65,7 @@ def start_new_sprint(active_sprint, next_sprint):
     def migrate_unfinished_tasks(active_sprint, next_sprint):
         if active_sprint != next_sprint:
             for task in active_sprint.tasks:
-                if not is_task_done(task):
+                if task.alive and not is_task_done(task):
                     task.m_estimate, task.m_done = new_sprint_points(task.m_estimate, task.m_done)
                     task.s_estimate, task.s_done = new_sprint_points(task.s_estimate, task.s_done)
                     task.b_estimate, task.b_done = new_sprint_points(task.b_estimate, task.b_done)
@@ -77,17 +77,18 @@ def start_new_sprint(active_sprint, next_sprint):
         m_estimate_sum = s_estimate_sum = b_estimate_sum = 0
 
         for task in next_sprint.tasks:
-            if is_task_in_backlog(task):
-                task.status = "Next Up"
+            if task.alive:
+                if is_task_in_backlog(task):
+                    task.status = "Next Up"
 
-            if task.m_estimate and not task.m_done:
-                m_estimate_sum += task.m_estimate
+                if task.m_estimate and not task.m_done:
+                    m_estimate_sum += task.m_estimate
 
-            if task.s_estimate and not task.s_done:
-                s_estimate_sum += task.s_estimate
+                if task.s_estimate and not task.s_done:
+                    s_estimate_sum += task.s_estimate
 
-            if task.b_estimate and not task.b_done:
-                b_estimate_sum += task.b_estimate
+                if task.b_estimate and not task.b_done:
+                    b_estimate_sum += task.b_estimate
 
         return m_estimate_sum, s_estimate_sum, b_estimate_sum
 
