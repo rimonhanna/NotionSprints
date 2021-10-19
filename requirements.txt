@@ -1,2 +1,2 @@
-notion @ git+https://github.com/yashgorana/notion-py.git@c4e67e5b2d8efeedbbc9c48d6947bab3cabca1c5
+notion @ git+https://github.com/wsykala/notion-py.git
 python-dotenv==0.19.0
