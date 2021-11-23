@@ -86,7 +86,7 @@ def start_new_sprint(active_sprint, next_sprint):
         m_estimate_sum = s_estimate_sum = b_estimate_sum = 0
 
         for task in next_sprint.tasks:
-            if task.alive:
+            if task.alive and is_task_in_progress(task):
                 if is_task_in_backlog(task):
                     task.status = "Next Up"
 
