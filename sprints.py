@@ -11,9 +11,12 @@ client = NotionClient(token_v2=token)
 
 # Access a database using the URL of the database page or the inline block
 sprints = client.get_collection_view(os.getenv('SPRINTS_TABLE_URL'))
+current_week = datetime.today().isocalendar().year * 52 + datetime.today().isocalendar().week
+active_sprints = [x for x in sprints.collection.get_rows() if x.start_date and x.end_date and ((current_week - x.start_date.start.isocalendar().week) == 2 and current_week == x.end_date.start.isocalendar().week)]
+next_sprints = [x for x in sprints.collection.get_rows() if x.start_date and x.end_date and (current_week == x.start_date.start.isocalendar().week and (x.end_date.start.isocalendar().week - current_week == 2))]
 
-active_sprints = [x for x in sprints.collection.get_rows() if x.active_sprint]
-next_sprints = [x for x in sprints.collection.get_rows() if x.start_date and x.end_date and (x.start_date.start <= datetime.today().date() and x.end_date.start > datetime.today().date())]
+print(active_sprints)
+print(next_sprints)
 
 def is_task_done(task): 
     return task.status in ["Demo", "Done 🙌"]
