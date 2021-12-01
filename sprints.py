@@ -60,22 +60,27 @@ def migrate_unfinished_tasks(current_sprint, next_sprint):
 
 def calculate_new_sprint_storypoints(next_sprint):
     m_estimate_sum = s_estimate_sum = b_estimate_sum = 0
+    m_done_sum = s_done_sum = b_done_sum = 0
 
     for task in next_sprint.tasks:
-        if task.alive and is_task_in_progress(task):
-            if is_task_in_backlog(task):
-                task.status = "Next Up"
+        if task.alive and not is_task_in_backlog(task):
 
-            if task.m_estimate and not task.m_done:
+            if task.m_estimate:
+                if task.m_done:
+                    m_done_sum += task.m_done
                 m_estimate_sum += task.m_estimate
 
-            if task.s_estimate and not task.s_done:
+            if task.s_estimate:
+                if task.s_done:
+                    s_done_sum += task.s_done
                 s_estimate_sum += task.s_estimate
 
-            if task.b_estimate and not task.b_done:
+            if task.b_estimate:
+                if task.b_done:
+                    b_done_sum += task.b_done
                 b_estimate_sum += task.b_estimate
 
-    return m_estimate_sum, s_estimate_sum, b_estimate_sum
+    return m_estimate_sum - m_done_sum, s_estimate_sum - s_done_sum, b_estimate_sum - b_done_sum
 
 def calculate_sum(task, actual_sum, done_sum, estimate, done):
     if estimate:
